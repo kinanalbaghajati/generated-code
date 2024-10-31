@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Code;
 use App\Models\Invoice;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
+
 
 class InvoiceController extends Controller
 {
@@ -29,6 +29,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
+
         return view('backend.invoices.create');
     }
 
@@ -44,21 +45,28 @@ class InvoiceController extends Controller
             ]);
             $notification = createNotification('success', 'Inserted Successfully');
 
-            $generated_code = Code::where('is_used', false)->first();
+            $generated_code = Code::where('is_used', false)->inRandomOrder()->first();
             if (is_null($generated_code))
             {
                 $false_notification = createNotification('warning', '8000 Codes Have Been Used !!');
                 return redirect()->back()->with($false_notification);
+            }else
+            {
+                $encryptedValue = Crypt::encryptString($generated_code->code);
+                $decryptedValue = Crypt::decryptString($encryptedValue);
             }
             $invoice = new Invoice();
             $invoice->invoice_number = $request->invoice_number;
-            $invoice->generated_code = $generated_code->code;
+            $invoice->generated_code = $encryptedValue ??$generated_code->code;
             $invoice->user_id = auth()->user()->id;
             $invoice->created_at = Carbon::now();
             $invoice->save();
 
             Code::where('id', $generated_code->id)->update(['is_used' => true]);
 
+
+
+            Session::put('code', $decryptedValue);
             return redirect()->back()->with($notification);
         } catch (\Throwable $throwable) {
             $notification = createNotification('error', $throwable->getMessage());
@@ -96,7 +104,8 @@ class InvoiceController extends Controller
             $invoice = new Invoice();
             $invoice->invoice_number = $request->invoice_number ?? $invoice->invoice_number;
             $notification = createNotification('warning', 'Updated Successfully');
-            return redirect()->back()->with($notification);
+            $kinan = 'kinan';
+            return redirect()->back()->with($notification ,$kinan);
         } catch (\Throwable $throwable) {
             $notification = createNotification('error', $throwable->getMessage());
             return redirect()->back()->with($notification);
@@ -110,7 +119,8 @@ class InvoiceController extends Controller
     {
         try {
             $invo = Invoice::where(['id' => $id])->first();
-            Code::where('code', $invo->generated_code)->update(['is_used' => false]);
+           $code =  Code::where('code', Crypt::decryptString($invo->generated_code))->first();
+            $code->update(['is_used'=> false]);
             $invo->delete();
             $notification = createNotification('success', 'Deleted Successfully');
 

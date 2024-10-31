@@ -3,13 +3,13 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="mr-auto">
-                <h3 class="page-title">Invoices</h3>
+                <h3 class="page-title">Receipts</h3>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">all Invoices</li>
-                            <li class="breadcrumb-item active" aria-current="page"> Invoices</li>
+                            <li class="breadcrumb-item" aria-current="page">all Receipts</li>
+                            <li class="breadcrumb-item active" aria-current="page"> Receipts</li>
                         </ol>
                     </nav>
                 </div>
@@ -22,7 +22,7 @@
 
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Invoices Data Table</h3>
+                <h3 class="box-title">Receipts Data Table </h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -32,7 +32,7 @@
                         <tr>
                             <th>#</th>
                             <th>Inserted By</th>
-                            <th>Invoice Number</th>
+                            <th>Receipt Number</th>
                             <th>Generated Code</th>
                             <th>Create Date</th>
                             <th>Action</th>
@@ -40,12 +40,17 @@
                         </thead>
                         <tbody>
                       @foreach($invoices as $key=> $item)
+                          @php
+
+                             $encryptedValue = \Illuminate\Support\Facades\Crypt::decryptString($item->generated_code);
+                          @endphp
+
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>
                                 <span class="badge badge-info" style="font-size: 14px">{{$item->user->name}}</span></td>
                             <td><span class="badge badge-primary" style="font-size: 14px">{{$item->invoice_number}}</span></td>
-                            <td><span class="badge badge-dark" style="font-size: 14px">{{$item->generated_code}}</span></td>
+                            <td><span class="badge badge-dark" style="font-size: 14px">{{$encryptedValue}}</span></td>
                             <td><span class="badge badge-success" style="font-size: 14px">{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d H:i:s')}}</span></td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-flat"
@@ -83,7 +88,7 @@
                                 <div class="modal-body">
                                     <div class="form-group row mb-3">
                                         <div class="col">
-                                            <label class="form-control-label" for="name">Invoice Number</label>
+                                            <label class="form-control-label" for="name">Receipt Number</label>
                                             <input type="text" class="form-control" id="name" name="invoice_number"
                                                    value="{{ $item->invoice_number ?? '' }}">
                                             @error('name')

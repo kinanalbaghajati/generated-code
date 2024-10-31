@@ -49,12 +49,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('admins/destroy/{id}', 'destroy')->name('admins.destroy');
     });
 
-    Route::prefix('invoices')->controller(InvoiceController::class)->group(function() {
-        Route::get('invoice', 'index')->name('invoice.index')->middleware(['permission:invoices_all']);
-        Route::get('invoice/create', 'create')->name('invoice.create')->middleware(['permission:invoices_add']);
-        Route::post('invoice/insert', 'store')->name('invoice.insert')->middleware(['permission:invoices_add']);
-        Route::post('invoice/update/{id}', 'update')->name('invoice.update')->middleware(['permission:invoices_all']);
-        Route::delete('invoice/delete/{id}', 'destroy')->name('invoice.destroy')->middleware(['permission:invoices_all']);
+    Route::prefix('receipts')->controller(InvoiceController::class)->group(function() {
+        Route::get('receipt', 'index')->name('invoice.index')->middleware(['permission:invoices_all']);
+        Route::get('receipt/create', 'create')->name('invoice.create')->middleware(['permission:invoices_add']);
+        Route::post('receipt/insert', 'store')->name('invoice.insert')->middleware(['permission:invoices_add']);
+        Route::post('receipt/update/{id}', 'update')->name('invoice.update')->middleware(['permission:invoices_all']);
+        Route::delete('receipt/delete/{id}', 'destroy')->name('invoice.destroy')->middleware(['permission:invoices_all']);
     });
 
 });

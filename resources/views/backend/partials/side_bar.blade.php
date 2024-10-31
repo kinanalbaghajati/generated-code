@@ -7,11 +7,10 @@
 
     <div class="user-profile">
         <div class="ulogo">
-            <a href="index.html">
+            <a href="#">
                 <!-- logo for regular state and mobile devices -->
-                <div class="d-flex align-items-center justify-content-center">
-                    <img src="../images/logo-dark.png" alt="">
-                    <h3><b>Mana</b>-itc</h3>
+                <div class="d-flex align-items-center justify-content-center px-4 py-2 ">
+                    <img class="rounded" src="{{asset('backend_theme/logo.jpg')}}" alt="">
                 </div>
             </a>
         </div>
@@ -60,21 +59,21 @@
                 </ul>
             </li>
         @endcan
-        <li class="header nav-small-cap">Invoices page</li>
-        <li class="treeview @if($prefix == 'invoices') active menu-open @endif">
+        <li class="header nav-small-cap">Receipts page</li>
+        <li class="treeview @if($prefix == 'receipts') active menu-open @endif">
             <a href="#">
                 <i data-feather="file"></i>
-                <span>Invoices</span>
+                <span>Receipts</span>
                 <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
             </a>
             <ul class="treeview-menu ">
                 @can('invoices_all')
-                    <li @if($route == 'invoice.index') class="active" @endif><a href="{{route('invoice.index')}}"><i class="ti-more"></i>All Invoices</a></li>
+                    <li @if($route == 'invoice.index') class="active" @endif><a href="{{route('invoice.index')}}"><i class="ti-more"></i>All Receipts</a></li>
                 @endcan
                 @can('invoices_add')
-                    <li @if($route == 'invoice.create') class="active" @endif><a href="{{route('invoice.create')}}"><i class="ti-more"></i>Add Invoice</a></li>
+                    <li @if($route == 'invoice.create') class="active" @endif><a href="{{route('invoice.create')}}"><i class="ti-more"></i>Add Receipt</a></li>
                 @endcan
             </ul>
         </li>

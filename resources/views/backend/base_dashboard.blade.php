@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{asset('backend_theme/images/favicon.ico')}}">
 
-    <title>Sunny Admin - Dashboard</title>
+    <title>Woqod OTP System</title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="{{asset('backend_theme/main-dark/css/vendors_css.css')}}">
